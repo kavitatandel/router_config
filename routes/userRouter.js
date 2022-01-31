@@ -22,7 +22,24 @@ userRouter.get('/:id', (req, res, next) => {
     })
 })
         
-       
+  
+userRouter.post('/', validateUser, (req, res) => {
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const age = req.body.age;
+
+    if (firstName === undefined || lastName === undefined || age === undefined) {
+        res.sendStatus(400);
+    }
+    else {
+        pool.query("INSERT INTO UserInfo (firstname, lastname, age) VALUES ($1,$2,$3)", [firstName, lastName, age])
+            .then(data => res.status(201).json(data))
+            .catch(error => res.sendStatus(404))
+
+    }
+
+})
+     
 
 
 
