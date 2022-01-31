@@ -9,20 +9,27 @@ userRouter.get('/', (req, res) => {
 })
 
 userRouter.get('/:id', (req, res, next) => {
-    const {id} = req.params
+    const { id } = req.params
     pool.query("SELECT id FROM UserInfo WHERE id = $1", [id])
-    .then(data => {
-        if (data.rowCount < 0) {
-            res.sendStatus(404)
-        }
-        else {
-            res.json(data)
-            .catch(error => res.sendStatus(404))
-        }
-    })
+        .then(data => {
+            if (data.rowCount < 0) {
+                res.sendStatus(404)
+            }
+            else {
+                res.json(data)
+                    .catch(error => res.sendStatus(404))
+            }
+        })
 })
-        
-  
+
+//validator for userinfo
+const validateUser = [
+    body('firstName').isString(),
+    body('lastName').isString(),
+    body('age').isNumeric()
+]
+
+
 userRouter.post('/', validateUser, (req, res) => {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
@@ -39,7 +46,7 @@ userRouter.post('/', validateUser, (req, res) => {
     }
 
 })
-     
+
 
 
 
