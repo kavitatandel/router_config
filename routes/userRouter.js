@@ -1,5 +1,6 @@
 const userRouter = require('express').Router();
 const pool = require('../client');
+const { body, validationResult } = require('express-validator');
 
 userRouter.get('/', (req, res) => {
     pool.query("Select * FROM UserInfo")
